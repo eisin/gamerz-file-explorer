@@ -39,7 +39,7 @@ function list_directories( $path ) {
     global $gmz_directories, $ignore_folders;
     if( $handle = @opendir( $path ) ) {
         while( false !== ( $filename = readdir( $handle ) ) ) {
-            if ( ! in_array( $filename, [ '.', '..', '.git', '.svn' ], true ) ) {
+            if ( ! in_array( $filename, array( '.', '..', '.git', '.svn' ), true ) ) {
                 $file_path = substr( $path . '/' . $filename, strlen( GFE_ROOT_DIR ) + 1, strlen( $path . '/' . $filename ) );
                 if( is_dir( $path . '/' . $filename ) ) {
                     if( ! in_array( $file_path, $ignore_folders, true ) ) {
@@ -60,7 +60,7 @@ function list_files( $path ) {
     global $gmz_files, $gmz_directories, $extensions, $ignore_files, $ignore_ext, $ignore_folders;
     if( $handle = @opendir( $path ) ) {
         while( false !== ( $filename = readdir( $handle ) ) ) {
-           if( ! in_array( $filename, [ '.', '..', '.git', '.svn' ], true ) ) {
+           if( ! in_array( $filename, array( '.', '..', '.git', '.svn' ), true ) ) {
                 $file_path = substr( $path . '/' . $filename, strlen( GFE_ROOT_DIR ) + 1, strlen( $path . '/'. $filename ) );
                 $file_folder = substr( $file_path, 0, - ( strlen( $filename ) + 1 ) );
                 if( is_dir( $path . '/' . $filename ) ) {
@@ -73,7 +73,7 @@ function list_files( $path ) {
                         $file_ext = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
                         if( ! in_array( $file_ext, $ignore_ext, true ) && ! in_array( $file_path, $ignore_files, true ) && ! in_array( $file_folder, $ignore_folders, true ) ) {
                             if ( ! empty ( $extensions[$file_ext][0] ) ) {
-                                $gmz_files[] = [ 'name' => $filename, 'ext' => $file_ext, 'path' => $file_path, 'type' => ! empty( $extensions[$file_ext][0] ) ? $extensions[$file_ext][0] : 'Unknown', 'size' => filesize( $path . '/' . $filename ), 'date' => filemtime( $path . '/' . $filename ) ];
+                                $gmz_files[] = array( 'name' => $filename, 'ext' => $file_ext, 'path' => $file_path, 'type' => ! empty( $extensions[$file_ext][0] ) ? $extensions[$file_ext][0] : 'Unknown', 'size' => filesize( $path . '/' . $filename ), 'date' => filemtime( $path . '/' . $filename ) );
                             }
                         }
                     }
@@ -91,15 +91,15 @@ function list_directories_files( $path ) {
     global $gmz_files, $gmz_directories, $extensions, $ignore_files, $ignore_ext, $ignore_folders, $directories_before_current_path, $current_directory_path;
     if( $handle = @opendir( $path ) ) {
         while( false !== ( $filename = readdir( $handle ) ) ) {
-            if( ! in_array( $filename, [ '.', '..', '.git', '.svn' ], true ) ) {
+            if( ! in_array( $filename, array( '.', '..', '.git', '.svn' ), true ) ) {
                 if( is_file( $path . '/' . $filename ) && ! in_array( $directories_before_current_path . $current_directory_path . $filename, $ignore_files, true ) ) {
                     $file_ext = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
                     if( ! in_array( $file_ext, $ignore_ext, true ) ) {
-                        $gmz_files[] = [ 'name' => $filename, 'ext' => $file_ext, 'type' => ! empty( $extensions[$file_ext][0] ) ? $extensions[$file_ext][0] : 'Unknown', 'size' => filesize( $path . '/' . $filename ), 'date' => filemtime( $path . '/' . $filename ) ];
+                        $gmz_files[] = array( 'name' => $filename, 'ext' => $file_ext, 'type' => ! empty( $extensions[$file_ext][0] ) ? $extensions[$file_ext][0] : 'Unknown', 'size' => filesize( $path . '/' . $filename ), 'date' => filemtime( $path . '/' . $filename ) );
                     }
                 }
                 if( is_dir( $path . '/' . $filename ) && ! in_array( $directories_before_current_path . $current_directory_path . $filename, $ignore_folders, true ) ) {
-                    $gmz_directories[] = [ 'name' => $filename, 'size' => dir_size( $path . '/' . $filename ), 'date' => filemtime( $path . '/' . $filename ) ];
+                    $gmz_directories[] = array( 'name' => $filename, 'size' => dir_size( $path . '/' . $filename ), 'date' => filemtime( $path . '/' . $filename ) );
                 }
             }
         }
@@ -114,7 +114,7 @@ function dir_size( $dir ) {
     $totalsize = 0;
     if( $dirstream = @opendir( $dir ) )  {
         while(false !== ( $filename = readdir( $dirstream) ) ) {
-            if( ! in_array( $filename, [ '.', '..', '.git', '.svn' ], true ) ) {
+            if( ! in_array( $filename, array( '.', '..', '.git', '.svn' ), true ) ) {
                 if( is_file( $dir . '/' . $filename ) ) {
                     $totalsize += filesize( $dir . '/' . $filename );
                 }
@@ -143,7 +143,7 @@ function array_alphabetsort() {
    $arguments = func_get_args();
    $arrays = $arguments[0];
    for( $c = ( count( $arguments ) - 1 ); $c > 0; $c-- ) {
-       if( in_array( $arguments[$c], [ SORT_ASC , SORT_DESC ], true ) ) {
+       if( in_array( $arguments[$c], array( SORT_ASC , SORT_DESC ), true ) ) {
            continue;
        }
        usort( $arrays, function($a, $b) use ($arguments, $c) {
@@ -197,24 +197,24 @@ function url( $url, $mode ) {
                 $temp_url = GFE_URL . '/' . GFE_ROOT_FILENAME;
                 $temp_url_nice = GFE_URL . '/';
             } else {
-                $temp_url = GFE_URL . '/' . GFE_ROOT_FILENAME . '?' . http_build_query( [ 'dir' => $url ] );
+                $temp_url = GFE_URL . '/' . GFE_ROOT_FILENAME . '?' . http_build_query( array( 'dir' => $url ) );
                 $temp_url_nice = GFE_URL . '/browse/' . $url . '/';
             }
             if( ! empty( $GET_sortby ) ) {
                 if( strpos( $temp_url, '?' ) === false ) {
-                    $temp_url .= '?' . http_build_query( [ 'by' => $sort_by, 'order' => $GET_sortorder ] );
+                    $temp_url .= '?' . http_build_query( array( 'by' => $sort_by, 'order' => $GET_sortorder ) );
                 } else {
-                    $temp_url .= http_build_query( [ 'by' => $sort_by, 'order' => $GET_sortorder ] );
+                    $temp_url .= http_build_query( array( 'by' => $sort_by, 'order' => $GET_sortorder ) );
                 }
                 $temp_url_nice .= 'sortby/' . $sort_by . '/sortorder/' . $GET_sortorder . '/';
             }
             break;
         case 'file':
-            $temp_url = GFE_URL . '/view.php?' . http_build_query( [ 'dir' => $url ] );
+            $temp_url = GFE_URL . '/view.php?' . http_build_query( array( 'dir' => $url ) );
             $temp_url_nice = GFE_URL . '/viewing/' . $url . '/';
             break;
         case 'download';
-            $temp_url = GFE_URL . '/view.php?' . http_build_query( [ 'file' => $url, 'dl' => 1 ] );
+            $temp_url = GFE_URL . '/view.php?' . http_build_query( array( 'file' => $url, 'dl' => 1 ) );
             $temp_url_nice = GFE_URL . '/download/' . $url . '/';
             break;
     }
@@ -240,10 +240,10 @@ function create_sort_url( $sortby ) {
         $sortorder = 'desc';
     }
     if( empty( $current_directory_name ) ) {
-        $temp_url = '?' . http_build_query( [ 'by' => $sortby, 'order' => $sortorder ] );
+        $temp_url = '?' . http_build_query( array( 'by' => $sortby, 'order' => $sortorder ) );
         $temp_url_nice = GFE_URL . '/sortby/' . $sortby . '/sortorder/' . $sortorder . '/';
     } else {
-        $temp_url = '?' . http_build_query( [ 'dir' => $directories_before_current_path . $current_directory_name, 'by' => $sortby, 'order' => $sortorder ] );
+        $temp_url = '?' . http_build_query( array( 'dir' => $directories_before_current_path . $current_directory_name, 'by' => $sortby, 'order' => $sortorder ) );
         $temp_url_nice = GFE_URL . '/browse/' . $directories_before_current_path . $current_directory_name . '/sortby/' . $sortby . '/sortorder/' . $sortorder . '/';
     }
     if( GFE_NICE_URL ) {
