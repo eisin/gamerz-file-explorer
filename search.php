@@ -21,7 +21,7 @@ $search_in = !empty($_GET['in']) ? trim(strip_tags(stripslashes($_GET['in']))) :
 // Variables Variables Variables
 $sort_order = '';
 $sort_order_image = '';
-$search_results = [];
+$search_results = array();
 $sort_by = 'date';
 $sort_order_text = 'Descending';
 
