@@ -29,8 +29,8 @@ $current_directory_path = '';
 $sort_order = '';
 $sort_order_text = '';
 $sort_by = '';
-$gmz_files = [];
-$gmz_directories = [];
+$gmz_files = array();
+$gmz_directories = array();
 $directory_names = explode('/', $url_path);
 
 ### Current Directory Name
